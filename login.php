@@ -3,50 +3,109 @@
 	// echo "<br>";
 	// var_dump ($_POST);
 
-	$signupEmailError = "Väli on kohustuslik";
+//MUUTUJAD
+$signupEmailError = "*";
+$signupEmail = "*";
 
-	// KAS KEEGI VAJUTAS NUPPU JA E-POST ON YLDSE OLEMAS?
+//Kasutajanime sisestamise kontroll
+	$signupEmailError = " *";
 
 if (isset ($_POST["signupEmail"])) {
+
+	if (empty ($_POST["signupEmail"])) {
+		// on tühi
+			$signupEmailError = "* Väli on kohustuslik!";
+			
+		} else {
+			// email on olemas ja õige
+			$signupEmail = $_POST["signupEmail"];
+			
+		}
+
+	}
+$gender = "";
+$genderError = "";
+
+if (isset ($_POST["gender"])) {
+
+	if (empty ($_POST["gender"])) {
+		// on tühi
+			$genderError = "* Väli on kohustuslik!";
+			
+		} else {
+			// sugu on määratud
+			$gender = $_POST["gender"];
+			
+		}
+
+	}
+
+
+
+
+
+//Kasutaja parooli sisestamise kontroll
+$signupPasswordError = " *";
+
+if (isset ($_POST["signupPassword"])) {
+
+	if (empty ($_POST["signupPassword"])) 
+
+	 {
+
+		if (strlen($_POST["signupPassword"]) < 8 ) {
+
+			$signupPasswordError = " parool peab olema vähemalt 8 tähemärki pikk";
+		}
+	}
+
+	}
+
+
+//Pangakaardi andmete sisestamise kontroll
+$creditCardError = " *";
+
+if (isset ($_POST["creditCard"])) {
 
 	// kas on tyhi?
 	// on olemas
 
-	if (empty ($_POST["signupEmail"])) {
+	if (empty ($_POST["creditCard"])) 
+
+	{
+		if (strlen($_POST["creditCard"]) != 16 ) {
+
+			$creditCardError = " Pangakaardi number peab olema 16 tähemärki pikk";
+		}
+
 
 	//on tyhi
 
-	echo "e-post on tyhi";
+	echo " kaardi andmed on puudu";
+	echo "<br><br>";
 	}
 
 }
-echo "<br><br>";
-$signupPasswordlError = "Väli on kohustuslik";
 
-	// KAS KEEGI VAJUTAS NUPPU JA E-POST ON YLDSE OLEMAS?
 
-if (isset ($_POST["signupPassword"])) {
+//Pangakaardi parooli sisestamise kontroll
+$creditCardPasswordError = " *";
 
+if (isset ($_POST["creditCardPassword"])) {
+
+	// kas on tyhi?
 	// on olemas
-	// kas on tyhi
 
-	if (empty ($_POST["signupPassword"])) 
+	if (empty ($_POST["creditCardPassword"])) {
 
-	else {
+	//on tyhi
 
-		if (strlen($_POST["signupPassword"]) < 8 ) {
-
-			$signupPasswordlError = "parool peab olema v2hemalt 8 t2hem2rki pikk";
-		}
-	}
-
-	echo "parool on puudu";
+	echo " kaardi parool on puudu";
 	}
 
 }
 
 
-	// KAS E-POST ON TYHI?
 ?>
 
 <!DOCTYPE html>
@@ -69,11 +128,47 @@ if (isset ($_POST["signupPassword"])) {
 		<h1>Loo kasutaja</h1>
 			<form method="POST">
 
-				<input type="email" placeholder="loo kasutaja" name="signupEmail"><?php echo $signupEmailError; ?>
+				<input type="email" placeholder="loo kasutaja" name="signupEmail" value="<?=$signupEmail;?>"><?php echo $signupEmailError; ?>
 				<br><br>
-				<input type="password" placeholder="sisesta parool" name="signupPassword"><?php echo $signupPasswordlError; ?>
+				<input type="password" placeholder="sisesta parool" name="signupPassword"><?php echo $signupPasswordError; ?>
 				<br><br>
 				<input type="submit" value="loo kasutaja">
 		</form>
+		
+		<h1>Sisesta pangakaardi andmed</h1>
+			<form method="POST">
+
+				<input type="text" placeholder="sisesta pangakaardi andmed" name="creditCard" maxlength=16><?php echo $creditCardError; ?>
+				<br><br>
+				<input type="password" placeholder="sisesta pangakaardi parool" name="creditCardPassword" maxlength=4><?php echo $creditCardPasswordError; ?>
+				<br><br>
+				<input type="submit" value="edasta andmed">
+		</form>
+		
+		<h1>Määra sugu</h1>
+			<form method="POST">
+
+				 <?php if ($gender == "female") { ?>
+				<input type="radio" name="gender" value="female" checked> female<br>
+			<?php } else { ?>
+				<input type="radio" name="gender" value="female" > female<br>
+			<?php } ?>
+			
+			<?php if ($gender == "male") { ?>
+				<input type="radio" name="gender" value="male" checked> male<br>
+			<?php } else { ?>
+				<input type="radio" name="gender" value="male" > male<br>
+			<?php } ?>
+			
+			
+			<?php if ($gender == "other") { ?>
+				<input type="radio" name="gender" value="other" checked> other<br>
+			<?php } else { ?>
+				<input type="radio" name="gender" value="other" > other<br>
+			<?php } ?>
+
+				<input type="submit" value="edasta andmed">
+		</form>
+
 	</body>
 </html>
