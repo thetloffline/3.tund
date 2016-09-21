@@ -145,7 +145,7 @@ if (isset ($_POST["creditCardPassword"])) {
 				<input type="submit" value="edasta andmed">
 		</form>
 		
-		<h1>Määra sugu</h1>
+		<h1>Määra enda sugu</h1>
 			<form method="POST">
 
 				 <?php if ($gender == "female") { ?>
