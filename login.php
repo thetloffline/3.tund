@@ -8,7 +8,7 @@ $signupEmailError = "*";
 $signupEmail = "*";
 
 //Kasutajanime sisestamise kontroll
-	$signupEmailError = " *";
+	$signupEmailError = "*";
 
 if (isset ($_POST["signupEmail"])) {
 
@@ -45,7 +45,7 @@ if (isset ($_POST["gender"])) {
 
 
 //Kasutaja parooli sisestamise kontroll
-$signupPasswordError = " *";
+$signupPasswordError = "*";
 
 if (isset ($_POST["signupPassword"])) {
 
@@ -63,7 +63,7 @@ if (isset ($_POST["signupPassword"])) {
 
 
 //Pangakaardi andmete sisestamise kontroll
-$creditCardError = " *";
+$creditCardError = "*";
 
 if (isset ($_POST["creditCard"])) {
 
@@ -89,7 +89,7 @@ if (isset ($_POST["creditCard"])) {
 
 
 //Pangakaardi parooli sisestamise kontroll
-$creditCardPasswordError = " *";
+$creditCardPasswordError = "*";
 
 if (isset ($_POST["creditCardPassword"])) {
 
@@ -106,7 +106,24 @@ if (isset ($_POST["creditCardPassword"])) {
 }
 
 
+if ($signupEmailError == "*" &&
+	$signupPasswordError == "*" &&
+	isset($_POST["signupEmail"]) &&
+	isset($_POST["signupPassword"])
+)	{
+
+// vigu ei olnud, kõik on olemas, salvestan
+	echo "Salvestan.. <br>";
+	echo "email ".$signupEmail."<br>";
+	echo "parool".$_POST["signupPassword"]."<br>";
+
+	$password = hash("sha512", $_POST["signupPassword"]);
+	echo $password;
+
+}
+
 ?>
+
 
 <!DOCTYPE html>
 <html>
