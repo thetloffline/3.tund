@@ -1,4 +1,7 @@
 <?php
+	// kutsutakse fail config.php
+	require ("../../config.php");
+	
 	// var_dump ($_GET);
 	// echo "<br>";
 	// var_dump ($_POST);
@@ -118,7 +121,30 @@ if ($signupEmailError == "*" &&
 	echo "parool".$_POST["signupPassword"]."<br>";
 
 	$password = hash("sha512", $_POST["signupPassword"]);
-	echo $password;
+	echo $password."<br>";
+
+//Loon ühenduse user_sample mysql tabeliga
+	$database = "if16_thetloff";
+	$mysqli = new mysqli($serverHost, $serverUsername, $serverPassword, $database);
+
+	$stmt = $mysqli->prepare("
+		INSERT INTO user_sample (email, password) VALUE (?, ?)");
+	//Asendan küsimärgid
+	// iga märgi kohta tuleb lisada üks täht - mis muutuja on
+	// s - string
+	// i - int
+	// d - double
+	// bind_param - määra muutuja  :: ss tähendab, et mõlemad muutujad on stringid. kui oleks si ,siis esimene muutuja oleks STR ja teine INT.
+	$stmt ->bind_param("ss", $signupEmail, $password);
+
+	if ($stmt->execute() ) {
+		echo "õnnestus";
+	} else {
+		echo "ERROR ".$stmt->error;
+	}
+	
+
+
 
 }
 
