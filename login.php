@@ -1,6 +1,8 @@
 <?php
 	// kutsutakse fail config.php
 	require ("../../config.php");
+	require("./functions.php");
+
 	
 	// var_dump ($_GET);
 	// echo "<br>";
@@ -33,7 +35,7 @@ if (isset ($_POST["gender"])) {
 
 	if (empty ($_POST["gender"])) {
 		// on tühi
-			$genderError = "* Väli on kohustuslik!";
+			$genderError = "Väli on kohustuslik!";
 			
 		} else {
 			// sugu on määratud
@@ -107,7 +109,13 @@ if (isset ($_POST["creditCardPassword"])) {
 	}
 
 }
-
+/*
+Kuvab lihtsalt sisestatud Signupi andmed
+echo $signupEmailError;
+echo $signupPasswordError;
+echo $signupEmail;
+echo $_POST["signupPassword"];
+*/
 
 if ($signupEmailError == "*" &&
 	$signupPasswordError == "*" &&
@@ -123,30 +131,24 @@ if ($signupEmailError == "*" &&
 	$password = hash("sha512", $_POST["signupPassword"]);
 	echo $password."<br>";
 
+	signup($signupEmail, $password);
 //Loon ühenduse user_sample mysql tabeliga
-	$database = "if16_thetloff";
-	$mysqli = new mysqli($serverHost, $serverUsername, $serverPassword, $database);
-
-	$stmt = $mysqli->prepare("
-		INSERT INTO user_sample (email, password) VALUE (?, ?)");
-	//Asendan küsimärgid
-	// iga märgi kohta tuleb lisada üks täht - mis muutuja on
-	// s - string
-	// i - int
-	// d - double
-	// bind_param - määra muutuja  :: ss tähendab, et mõlemad muutujad on stringid. kui oleks si ,siis esimene muutuja oleks STR ja teine INT.
-	$stmt ->bind_param("ss", $signupEmail, $password);
-
-	if ($stmt->execute() ) {
-		echo "õnnestus";
-	} else {
-		echo "ERROR ".$stmt->error;
-	}
-	
+	// siit viide functions.php faili
 
 
 
 }
+if (isset($_POST["loginEmail"]) &&
+ 	isset($_POST["loginPassword"]) &&
+ 	!empty($_POST["loginEmail"]) &&
+ 	!empty($_POST["loginPassword"])
+ 	) {
+
+ 	login ($_POST["loginEmail"], $_POST["loginPassword"]);	
+ 	
+ 	}
+
+	
 
 ?>
 
@@ -176,20 +178,20 @@ if ($signupEmailError == "*" &&
 				<input type="password" placeholder="sisesta parool" name="signupPassword"><?php echo $signupPasswordError; ?>
 				<br><br>
 				<input type="submit" value="loo kasutaja">
-		</form>
+		
 		
 		<h1>Sisesta pangakaardi andmed</h1>
-			<form method="POST">
+			
 
 				<input type="text" placeholder="sisesta pangakaardi andmed" name="creditCard" maxlength=16><?php echo $creditCardError; ?>
 				<br><br>
 				<input type="password" placeholder="sisesta pangakaardi parool" name="creditCardPassword" maxlength=4><?php echo $creditCardPasswordError; ?>
 				<br><br>
-				<input type="submit" value="edasta andmed">
-		</form>
+			
+		
 		
 		<h1>Määra enda sugu</h1>
-			<form method="POST">
+			
 
 				 <?php if ($gender == "female") { ?>
 				<input type="radio" name="gender" value="female" checked> female<br>
