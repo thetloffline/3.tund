@@ -1,6 +1,9 @@
 <?php
 //functions.php
+//see fail peab olema seotud k]igega, kus tahame sessiooni kasutada.
+// nyyd saab kasutada $_SESSION muutujat 
 
+session_start();
 $database = "if16_thetloff";
 
 function signup($email, $password) {
@@ -27,7 +30,9 @@ function signup($email, $password) {
 
 function login($email, $password) {
 
-$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
+	$notice = "";
+
+	$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
 
 	$stmt = $mysqli->prepare("
 		SELECT id, email, password, created
@@ -46,14 +51,22 @@ $mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBAL
 			$hash = hash ("sha512", $password);
 			if ($hash == $passwordFormDb) {
 				echo "kasutaja $id logis sisse";
+
+				$_SESSION["userid"] =$id;
+				$_SESSION["userEmail"] =$emamilFormBd;
+
+				header("Location: data.php");
+
+
+
 			} else {
-				echo "parool on vale";
+				$notice = "parool on vale";
 			} 
 		} else {
 
-			echo "sellise emailiga  ".$email."kasutajat ei ole olemas";
+			$notice = "sellise emailiga  ".$email."kasutajat ei ole olemas";
 		}
-		
+		return $notice;
 	}
 
 	

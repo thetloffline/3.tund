@@ -2,6 +2,10 @@
 	// kutsutakse fail config.php
 	require ("../../config.php");
 	require("./functions.php");
+	// kui on sisse loginud, siis suunan data.php lehele
+		if (isset($_SESSION["userid"])) {
+		header("Location: data.php");
+	}
 
 	
 	// var_dump ($_GET);
@@ -138,13 +142,15 @@ if ($signupEmailError == "*" &&
 
 
 }
+
+$notice ="";
 if (isset($_POST["loginEmail"]) &&
  	isset($_POST["loginPassword"]) &&
  	!empty($_POST["loginEmail"]) &&
  	!empty($_POST["loginPassword"])
  	) {
 
- 	login ($_POST["loginEmail"], $_POST["loginPassword"]);	
+ 	$notice = login ($_POST["loginEmail"], $_POST["loginPassword"]);	
  	
  	}
 
@@ -161,6 +167,7 @@ if (isset($_POST["loginEmail"]) &&
 	<body>
 
 		<h1>Logi sisse</h1>
+		<p style="color:red"><?=$notice;?></p>
 			<form method="POST">
 
 				<input type="email" placeholder="sisesta e-post" name="loginEmail">
