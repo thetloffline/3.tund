@@ -1,6 +1,6 @@
 <?php
 	// kutsutakse fail config.php
-	require ("../../config.php");
+	
 	require("./functions.php");
 	// kui on sisse loginud, siis suunan data.php lehele
 		if (isset($_SESSION["userid"])) {
@@ -58,10 +58,11 @@ $signupPasswordError = "*";
 
 if (isset ($_POST["signupPassword"])) {
 
-	if (empty ($_POST["signupPassword"])) 
+	if (empty ($_POST["signupPassword"])) {
 
-	 {
-
+		$signupPasswordError = "vali on kohustuslik";
+		
+	} else {
 		if (strlen($_POST["signupPassword"]) < 8 ) {
 
 			$signupPasswordError = " parool peab olema vähemalt 8 tähemärki pikk";
@@ -79,9 +80,11 @@ if (isset ($_POST["creditCard"])) {
 	// kas on tyhi?
 	// on olemas
 
-	if (empty ($_POST["creditCard"])) 
+	if (empty ($_POST["creditCard"])) {
 
-	{
+		$creditCardError = "vali on kohustuslik";
+	} else {
+
 		if (strlen($_POST["creditCard"]) != 16 ) {
 
 			$creditCardError = " Pangakaardi number peab olema 16 tähemärki pikk";
@@ -90,7 +93,6 @@ if (isset ($_POST["creditCard"])) {
 
 	//on tyhi
 
-	echo " kaardi andmed on puudu";
 	echo "<br><br>";
 	}
 
@@ -109,7 +111,7 @@ if (isset ($_POST["creditCardPassword"])) {
 
 	//on tyhi
 
-	echo " kaardi parool on puudu";
+	$creditCardPasswordError = " kaardi parool on puudu";
 	}
 
 }
@@ -126,7 +128,7 @@ if ($signupEmailError == "*" &&
 	isset($_POST["signupEmail"]) &&
 	isset($_POST["signupPassword"])
 )	{
-
+	
 // vigu ei olnud, kõik on olemas, salvestan
 	echo "Salvestan.. <br>";
 	echo "email ".$signupEmail."<br>";

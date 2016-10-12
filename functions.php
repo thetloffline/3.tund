@@ -3,6 +3,8 @@
 //see fail peab olema seotud k]igega, kus tahame sessiooni kasutada.
 // nyyd saab kasutada $_SESSION muutujat 
 
+require ("../../config.php");
+
 session_start();
 $database = "if16_thetloff";
 
@@ -56,8 +58,7 @@ function login($email, $password) {
 				$_SESSION["userEmail"] =$emamilFormBd;
 
 				header("Location: data.php");
-
-
+				exit();
 
 			} else {
 				$notice = "parool on vale";
@@ -69,7 +70,68 @@ function login($email, $password) {
 		return $notice;
 	}
 
-	
+
+
+function saveEvent($age, $color) {
+
+
+	$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
+
+	$stmt = $mysqli->prepare("
+		INSERT INTO whistle (age, color) VALUES (?, ?)");
+	//Asendan küsimärgid
+	// iga märgi kohta tuleb lisada üks täht - mis muutuja on
+	// s - string
+	// i - int
+	// d - double
+	// bind_param - määra muutuja  :: ss tähendab, et mõlemad muutujad on stringid. kui oleks si ,siis esimene muutuja oleks STR ja teine INT.
+	$stmt ->bind_param("is", $age, $color);
+
+	if ($stmt->execute() ) {
+		echo "õnnestus";
+	} else {
+		echo "ERROR ".$stmt->error;
+	}
+	}
+
+function getAllPeople (){
+
+	$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
+	$stmt = $mysqli->prepare("
+		SELECT id, age, color
+		FROM whistle
+		");
+
+	$stmt->bind_result($id, $age, $color);
+	$stmt->execute();
+
+	$results = array();
+// while töötab niimitu korda kui palju on mysql päringutes ridasid
+	while ($stmt->fetch())	{
+		//echo $color."<br>";
+		$human = new StdClass();
+		$human->id = $id;
+		$human->age = $age;
+		$human->lightColor = $color;
+
+		array_push($results, $human);
+
+	}
+	return $results;
+
+}
+
+function cleanInput ($input) 
+	{
+// kustutab alguses ja lõpus olevad tühikud ära
+		$input = trim($input);
+// kustutab \ tagurpidi kaldkriipsud
+		$input = stripslashes($input);
+		$input = htmlspecialchars($input);
+// SAMA return htmlspecialchars(stripslashes($input(trim)));
+
+
+	}
 
 /*
 
