@@ -32,15 +32,15 @@ $color = "";
 
 $people = getAllPeople();
 
-// echo "<pre>";
-//var_dump($people[3]);
-//echo "</pre>";
+echo "<pre>";
+var_dump($people[3]);
+echo "</pre>";
 
 
  ?>
  <h1>Data</h1>
  <p>
- 		Tere tulemast, <?=$_SESSION["userEmail"];?>!
+ 		Tere tulemast <a href="user.php"><?=$_SESSION["userEmail"];?></a>!
  		<a href="?logout=1">logi valja</a>
  </p>
 
