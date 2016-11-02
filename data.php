@@ -32,9 +32,9 @@ $color = "";
 
 $people = getAllPeople();
 
-echo "<pre>";
+/*echo "<pre>";
 var_dump($people[3]);
-echo "</pre>";
+echo "</pre>";*/
 
 
  ?>
@@ -73,6 +73,7 @@ echo "</pre>";
 					$html .= "<td>".$p->id."</th>";
 					$html .= "<td>".$p->age."</th>";
 					$html .= "<td>".$p->lightColor."</th>";
+				$html .= "<td><a href='edit.php?id=".$p->id."'>edit.php</a></td>";
 				$html .= "</tr>";
 
 
